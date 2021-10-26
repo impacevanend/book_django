@@ -2,7 +2,7 @@
   <div class="containder">
     <div class="row">
       <div class="col text-left">
-        <h2>Editar Libro</h2>
+        <h2>Nuevo Libro</h2>
       </div>
     </div>
   <div class="row">
@@ -26,7 +26,7 @@
 
             <div class="row">
               <div class="col text-left">
-                <b-button size="sm" variant="primary" type="submit">Editar</b-button>
+                <b-button size="sm" variant="primary" type="submit">Crear</b-button>
                 <b-button size="sm" type="submit" class="btn-large-space" :to= "{ name: 'ListBook'}">Cancelar</b-button>
               </div>
             </div>
@@ -46,7 +46,7 @@ export default {
 
     data(){
       return{
-        bookId: this.$route.params.bookId,
+
         form: {
           title: '',
           description: ''
@@ -56,26 +56,17 @@ export default {
     methods:{
       onSubmit(evt){
         evt.preventDefault();
-         const path =`http://localhost:8000/api/v1.0/books/${this.bookId}/`
-        axios.put(path, this.form).then((responser)=>{
+         const path =`http://localhost:8000/api/v1.0/books/`
+        axios.post(path, this.form).then((responser)=>{
           this.form.title = responser.data.title;
           this.form.description = responser.data.description;
-          swal("¡Libro actualizado exitosamente!" ,"", "success");
+          swal("¡Libro creado exitosamente!" ,"", "success");
         }).catch((error)=>{
-          console.log(error);
-        })
-      },
-      getBook(){
-        const path =`http://localhost:8000/api/v1.0/books/${this.bookId}/`
-        axios.get(path).then((responser)=>{
-          this.form.title = responser.data.title;
-          this.form.description = responser.data.description;
-        }).catch((error)=>{
-          console.log(error);
+          swal("¡El Libro no ha sido creado!" ,"", "error");
         })
       }
     },created(){
-      this.getBook();
+      
     }
     }
 
